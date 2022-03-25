@@ -38,10 +38,9 @@
 					<section>
 						<h3>👩‍💻 Interface 👨‍💻</h3><br>
 						<p><a href="https://github.com/clap-rs/clap">github.com/clap-rs/clap</a></p>
-						<pre><code class="language-toml">
-[dependencies]
-clap = { version = "3.1", features = ["derive"] }
-						</code></pre>
+						<pre><code class="language-toml">[dependencies]
+clap = { version = "3.1", features = ["derive"] }</code></pre><br>
+						<p>Examples from <a href="https://github.com/mbhall88/rasusa">mbhall88/rasusa</a></p>
 					</section>
 					<section>
 						<pre><code data-noescape class="language-rust" data-line-numbers="1-21|1|2-3|5-12">/// Randomly subsample reads to a specified coverage.
@@ -104,7 +103,7 @@ struct Args {
 					</section>
 					<section>
 						<h4>Argument validation</h4>
-						<pre><code data-noescape class="language-rust" data-line-numbers="11">/// A utility function that allows the CLI to error if a path doesn't exist
+						<pre><code data-noescape class="language-rust">/// A utility function that allows the CLI to error if a path doesn't exist
 fn check_path_exists(s: &str) -> Result&lt;(), String&gt; {
     let path = PathBuf::from(s);
     if path.exists() {
@@ -112,8 +111,7 @@ fn check_path_exists(s: &str) -> Result&lt;(), String&gt; {
     } else {
         Err(format!("{} does not exist", s))
     }
-}
-						</code></pre>
+}</code></pre>
 						<pre><code class="language-plaintext">$ rasusa -i existingFile fakeFile
 error: Invalid value "fakeFile" for '--input &lt;INPUT&gt;...': fakeFile does not exist
 
@@ -143,7 +141,7 @@ struct Args {
 					</section>
 					<section>
 						<h4>Custom parsing</h4>
-						<pre><code data-noescape class="language-rust">fn parse_compression_format(s: &str) -> Result&lt;niffler::compression::Format, String&gt; {
+						<pre><code class="language-rust">fn parse_compression_format(s: &str) -> Result&lt;niffler::compression::Format, String&gt; {
     match s {
         "b" | "B" => Ok(niffler::Format::Bzip),
         "g" | "G" => Ok(niffler::Format::Gzip),
