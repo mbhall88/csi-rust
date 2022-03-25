@@ -4,19 +4,31 @@
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
 
-		<title>reveal.js</title>
+		<title>Building bioinformatics command line tools in Rust</title>
 
 		<link rel="stylesheet" href="dist/reset.css">
 		<link rel="stylesheet" href="dist/reveal.css">
-		<link rel="stylesheet" href="dist/theme/black.css">
+		<link rel="stylesheet" href="dist/theme/nord.css">
 
 		<!-- Theme used for syntax highlighted code -->
 		<link rel="stylesheet" href="plugin/highlight/nord.css">
 	</head>
 	<body>
+		<!--	Border line around slides		-->
+		<div class="line top"></div>
+		<div class="line bottom"></div>
+		<div class="line left"></div>
+		<div class="line right"></div>
+		<!--	Border line around slides		-->
 		<div class="reveal">
 			<div class="slides">
-				<section>Slide 1</section>
+				<section>
+					<h3>Building bioinformatics command line tools in Rust</h3>🦀
+					<br>
+					<p>Michael B. Hall $\in$ Coin Group @ Doherty Institute</p>
+					<p style="font-family: 'JetBrains Mono', monospace;font-size: 0.5em"><a href="https://twitter.com/mbhall88">@mbhall88</a> | michael.hall2 [at] unimelb.edu.au</p>
+					<p>Slides: <a href="https://mbh.sh/csi-rust">https://mbh.sh/csi-rust</a></p>
+				</section>
 				<section>Slide 2</section>
 			</div>
 		</div>
@@ -25,6 +37,7 @@
 		<script src="plugin/notes/notes.js"></script>
 		<script src="plugin/markdown/markdown.js"></script>
 		<script src="plugin/highlight/highlight.js"></script>
+		<script src="plugin/math/math.js"></script>
 		<script>
 			// More info about initialization & config:
 			// - https://revealjs.com/initialization/
@@ -33,7 +46,7 @@
 				hash: true,
 
 				// Learn about plugins: https://revealjs.com/plugins/
-				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes ]
+				plugins: [ RevealMarkdown, RevealHighlight, RevealNotes, RevealMath.KaTeX ]
 			});
 		</script>
 	</body>
