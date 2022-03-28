@@ -32,7 +32,7 @@
 				<section>
 					<h3>👩‍💻 Interface 👨‍💻</h3><br>
 					<h3>🚫 Errors 🚫</h3><br>
-					<h3>🚀 Speed 🚀</h3>
+					<h3>🚀 Concurrency (parallelism) 🚀</h3>
 				</section>
 				<section>
 					<section>
@@ -200,8 +200,116 @@ OPTIONS:
             Print version information</code></pre>
 					</section>
 				</section>
-				<section>Errors</section>
-				<section>Speed</section>
+				<section>
+					<section>
+						<h3>🚫 Errors 🚫</h3>
+						<p>One of the best features of Rust is enforced acknowledgement of the possibility of an error</p>
+						<p class="fragment">Rust uses <a href="https://doc.rust-lang.org/std/result/enum.Result.html"><code>Result&lt;T, E&gt;</code></a> to encapsulate this</p>
+						<pre class="fragment"><code>pub enum Result&lt;T, E&gt; {
+    Ok(T),
+    Err(E),
+}</code></pre>
+					</section>
+					<section>
+						<pre><code>std::fs::create_dir(args.output);</code></pre>
+						<pre class="fragment"><code class="language-plaintext">warning: unused `Result` that must be used
+  --> src/main.rs:67:5
+   |
+67 |     std::fs::create_dir(args.output);
+   |     ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+   |
+   = note: `#[warn(unused_must_use)]` on by default
+   = note: this `Result` may be an `Err` variant, which should be handled</code></pre>
+					</section>
+					<section>
+						<h3>Lazy error handling</h3>
+						<pre><code>std::fs::create_dir(args.output)?;</code></pre>
+						<pre class="fragment"><code class="language-plaintext">$ rasusa -i in.fq -o fakeDir/subdir
+Error: No such file or directory (os error 2)</code></pre>
+					</section>
+					<section>
+						<h4>What we need is context</h4>
+						<p class="fragment fade-in-then-semi-out" data-fragment-index="1"><a href="https://github.com/dtolnay/anyhow">github.com/dtolnay/anyhow</a></p>
+						<pre class="fragment fade-in-then-semi-out" data-fragment-index="1"><code>[dependencies]
+anyhow = "1.0"</code></pre>
+						<pre class="fragment fade-in-then-semi-out" ><code data-line-numbers="2">std::fs::create_dir(args.output)
+    .context("Failed to create the output directory")?;</code></pre>
+						<pre class="fragment"><code class="language-plaintext">$ rasusa -i in.fq -o fakeDir/subdir
+Error: Failed to create the output directory
+
+Caused by:
+    No such file or directory (os error 2)</code></pre>
+					</section>
+				</section>
+				<section>
+					<section>
+						<h3>🚀 Concurrency (parallelism) 🚀</h3>
+						<p>Most concurrency problems are <em>compile-time</em> in Rust - rather than <em>run-time</em></p>
+						<p class="fragment">This avoids time lost trying to recreate concurrent run-time bugs</p>
+						<p class="fragment">Example from <a href="https://github.com/mbhall88/psdm">mbhall88/psdm</a></p>
+					</section>
+					<section>
+						<h4>Got a sequential iterator?</h4>
+						<pre class="fragment"><code class="language-rust" data-line-numbers="1|2|3-4|5-13|15">let seqs: Vec&lt;Vec&lt;u8&gt;&gt; = ...;
+let pairwise_indices: Vec&lt;Vec&lt;usize&gt;&gt; = ...;
+let dists: Vec&lt;u64&gt; = pairwise_indices
+    .as_slice()
+    .map(|ix| {
+        let i = ix[0];
+        let j = ix[1];
+        if i == j {
+            0
+        else {
+            hamming_distance(&seqs[i], &seqs[j])
+        }
+    }
+})
+    .collect();</code></pre>
+					</section>
+					<section>
+						<h4>Got parallelism in one line!</h4>
+						<p class="fragment" data-fragment-index="1"><a href="https://github.com/rayon-rs/rayon">github.com/rayon-rs/rayon</a></p>
+						<pre class="fragment" data-fragment-index="1"><code>[dependencies]
+rayon = "1.5"</code></pre>
+					</section>
+					<section>
+						<h4>Got parallelism in one line!</h4>
+						<pre class="fragment" data-fragment-index="1"><code class="language-rust" data-line-numbers="1,6">use rayon::prelude::*;
+let seqs: Vec&lt;Vec&lt;u8&gt;&gt; = ...;
+let pairwise_indices: Vec&lt;Vec&lt;usize&gt;&gt; = ...;
+let dists: Vec&lt;u64&gt; = pairwise_indices
+    .as_slice()
+    .into_par_iter()
+    .map(|ix| {
+        let i = ix[0];
+        let j = ix[1];
+        if i == j {
+            0
+        else {
+            hamming_distance(&seqs[i], &seqs[j])
+        }
+    }
+})
+    .collect();</code></pre>
+						<p class="fragment" data-fragment-index="1">(Okay, maybe three lines 🤫)</p>
+					</section>
+				</section>
+				<section>
+					<h3>Further reading</h3>
+					<ul>
+						<li><a href="https://rust-cli.github.io/book/index.html">CLI book</a></li>
+						<li><a href="https://nick.groenen.me/posts/rust-error-handling/">Error handling blog post</a></li>
+						<li><a href="https://doc.rust-lang.org/book/ch16-00-concurrency.html">Fearless concurrency</a></li>
+					</ul>
+					<h3>Resources</h3>
+					<ul>
+						<li>Slides: <a href="https://mbh.sh/csi-rust">https://mbh.sh/csi-rust</a></li>
+						<li><a href="https://github.com/mbhall88/rasusa">mbhall88/rasusa</a></li>
+						<li><a href="https://github.com/mbhall88/psdm">mbhall88/psdm</a></li>
+						<li>GitHub and Twitter: @mbhall88</li>
+						<li>Email: michael.hall2 [at] unimelb.edu.au</li>
+					</ul>
+				</section>
 			</div>
 		</div>
 
