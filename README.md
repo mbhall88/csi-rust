@@ -1,3 +1,5 @@
+## Building bioinformatics command line tools in Rust
+
 ## [Go to live slides][slides]
 
 ---
