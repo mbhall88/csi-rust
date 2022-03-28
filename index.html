@@ -66,7 +66,7 @@ fn main() {
 }</code></pre>
 					</section>
 					<section>
-						<pre><code data-trim class="language-plaintext">$ rasusa --help
+						<pre class="fragment semi-fade-out" data-fragment-index="1"><code data-trim class="language-plaintext">$ rasusa --help
 rasusa 0.1.0
 Randomly subsample reads to a specified coverage
 
@@ -77,8 +77,8 @@ OPTIONS:
     -h, --help                Print help information
     -i, --input &lt;INPUT&gt;...    The fast{a,q} file(s) to subsample
     -V, --version             Print version information</code></pre>
-						<p>Usage</p>
-						<pre><code class="language-plaintext">$ rasusa -i someFile
+						<p class="fragment" data-fragment-index="1">Usage</p>
+						<pre class="fragment" data-fragment-index="1"><code class="language-plaintext">$ rasusa -i someFile
 Got input file "someFile"
 Got input file "otherFile"</code></pre>
 					</section>
@@ -103,7 +103,7 @@ struct Args {
 					</section>
 					<section>
 						<h4>Argument validation</h4>
-						<pre><code data-noescape class="language-rust">/// A utility function that allows the CLI to error if a path doesn't exist
+						<pre class="fragment semi-fade-out" data-fragment-index="1"><code data-noescape class="language-rust">/// A utility function that allows the CLI to error if a path doesn't exist
 fn check_path_exists(s: &str) -> Result&lt;(), String&gt; {
     let path = PathBuf::from(s);
     if path.exists() {
@@ -112,7 +112,7 @@ fn check_path_exists(s: &str) -> Result&lt;(), String&gt; {
         Err(format!("{} does not exist", s))
     }
 }</code></pre>
-						<pre><code class="language-plaintext">$ rasusa -i existingFile fakeFile
+						<pre class="fragment" data-fragment-index="1"><code class="language-plaintext">$ rasusa -i existingFile fakeFile
 error: Invalid value "fakeFile" for '--input &lt;INPUT&gt;...': fakeFile does not exist
 
 For more information try --help</code></pre>
@@ -141,7 +141,7 @@ struct Args {
 					</section>
 					<section>
 						<h4>Custom parsing</h4>
-						<pre><code class="language-rust">fn parse_compression_format(s: &str) -> Result&lt;niffler::compression::Format, String&gt; {
+						<pre class="fragment semi-fade-out" data-fragment-index="1"><code class="language-rust">fn parse_compression_format(s: &str) -> Result&lt;niffler::compression::Format, String&gt; {
     match s {
         "b" | "B" => Ok(niffler::Format::Bzip),
         "g" | "G" => Ok(niffler::Format::Gzip),
@@ -150,8 +150,8 @@ struct Args {
         _ => Err(format!("{} is not a known output format", s.to_string())),
     }
 }</code></pre>
-						<p>Usage</p>
-						<pre><code class="language-plaintext">$ rasusa -i inFile -O t
+						<h4 class="fragment" data-fragment-index="1">Usage</h4>
+						<pre class="fragment" data-fragment-index="1"><code class="language-plaintext">$ rasusa -i inFile -O t
 error: Invalid value "t" for '--output-type &lt;u|b|g|l&gt;': t is not a known output format
 
 For more information try --help</code></pre>
